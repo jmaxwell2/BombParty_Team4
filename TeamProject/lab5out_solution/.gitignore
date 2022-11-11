@@ -1,13 +1,12 @@
 /ChatClient.class
-/ChatGUI.class
 /ChatServer.class
 /ClientGUI.class
-/ContactControl.class
-/ContactPanel.class
+/ContactsPanel.class
 /CreateAccountControl.class
 /CreateAccountData.class
 /CreateAccountPanel.class
 /DatabaseFile.class
+/Error.class
 /InitialControl.class
 /InitialPanel.class
 /LoginControl.class
@@ -15,5 +14,4 @@
 /LoginPanel.class
 /ServerGUI$EventHandler.class
 /ServerGUI.class
-/TestChatServer.class
 /User.class

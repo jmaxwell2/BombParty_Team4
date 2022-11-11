@@ -1,4 +1,4 @@
-package lab5out;
+package lab5out_solution;
 
 import java.awt.*;
 import javax.swing.*;

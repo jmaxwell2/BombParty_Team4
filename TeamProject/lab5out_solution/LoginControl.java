@@ -1,4 +1,4 @@
-package lab5out;
+package lab5out_solution;
 
 import java.awt.*;
 import javax.swing.*;
@@ -10,8 +10,6 @@ public class LoginControl implements ActionListener
   // Private data fields for the container and chat client.
   private JPanel container;
   private ChatClient client;
-  private String loginStatus;
-  
   
   // Constructor for the login controller.
   public LoginControl(JPanel container, ChatClient client)
@@ -30,7 +28,7 @@ public class LoginControl implements ActionListener
     if (command == "Cancel")
     {
       CardLayout cardLayout = (CardLayout)container.getLayout();
-      cardLayout.show(container, "initial");
+      cardLayout.show(container, "1");
     }
 
     // The Submit button submits the login information to the server.
@@ -48,37 +46,30 @@ public class LoginControl implements ActionListener
       }
 
       // Submit the login information to the server.
-      try {
-		client.sendToServer(data);
-		
-		loginStatus = client.getLoginStatus();
-		System.out.println("login status from chatClient: " + loginStatus);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-      
-      // get the results of the login attempt
-      if (loginStatus.equals("SUCCESSFULLY LOGGED IN")) {
-    	  loginSuccess();
+      try
+      {
+        client.sendToServer(data);
       }
-     
+      catch (IOException e)
+      {
+        displayError("Error connecting to the server.");
+      }
     }
   }
 
-  // After the login is successful, set the User object and display the contacts screen. - this method would be invoked by 
-  //the ChatClient
+  // After the login is successful, set the User object and display the contacts screen.
   public void loginSuccess()
   {
-	  CardLayout cardLayout = (CardLayout)container.getLayout();
-      cardLayout.show(container, "contacts"); 
+    LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
+    
+    CardLayout cardLayout = (CardLayout)container.getLayout();
+    cardLayout.show(container, "4");
   }
 
-  // Method that displays a message in the error - could be invoked by ChatClient or by this class (see above)
+  // Method that displays a message in the error label.
   public void displayError(String error)
   {
     LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
     loginPanel.setError(error);
-    
   }
 }
