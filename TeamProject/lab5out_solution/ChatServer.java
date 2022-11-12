@@ -3,6 +3,9 @@ package lab5out_solution;
 import java.awt.*;
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -12,13 +15,19 @@ public class ChatServer extends AbstractServer
   private JTextArea log;
   private JLabel status;
   private boolean running = false;
-  private DatabaseFile database = new DatabaseFile();
+  private Database database;
 
   // Constructor for initializing the server with default settings.
   public ChatServer()
   {
     super(12345);
     this.setTimeout(500);
+    database = new Database();
+  }
+  
+  void setDatabase(Database database)
+  {
+	  this.database = database;
   }
 
   // Getter that returns whether the server is currently running.
@@ -78,15 +87,19 @@ public class ChatServer extends AbstractServer
       // Check the username and password with the database.
       LoginData data = (LoginData)arg0;
       Object result;
-      if (database.verifyAccount(data.getUsername(), data.getPassword()))
+      ArrayList<String> queResult = database.query("select username from user_data where username = '" + data.getUsername()
+    		  + "' and password = aes_encrypt('" + data.getPassword() + "', 'key')");
+      System.out.println(queResult.toString());
+      if (queResult != null)
       {
-        result = "LoginSuccessful";
-        log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
+    	  result = "LoginSuccessful";
+          log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
+    	  
       }
       else
       {
-        result = new Error("The username and password are incorrect.", "Login");
-        log.append("Client " + arg1.getId() + " failed to log in\n");
+    	  result = new Error("The username and password are incorrect.", "Login");
+          log.append("Client " + arg1.getId() + " failed to log in\n");
       }
       
       // Send the result to the client.
@@ -106,15 +119,24 @@ public class ChatServer extends AbstractServer
       // Try to create the account.
       CreateAccountData data = (CreateAccountData)arg0;
       Object result;
-      if (database.createNewAccount(data.getUsername(), data.getPassword()))
+      ArrayList<String> queResult = database.query("select username from user_data where username = '" + data.getUsername() + "'");
+      if (queResult != null)
       {
-        result = "CreateAccountSuccessful";
-        log.append("Client " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
+    	  result = new Error("The username is already in use.", "CreateAccount");
+          log.append("Client " + arg1.getId() + " failed to create a new account\n");
       }
       else
       {
-        result = new Error("The username is already in use.", "CreateAccount");
-        log.append("Client " + arg1.getId() + " failed to create a new account\n");
+        try {
+  		  database.executeDML("insert into user_data "
+  		  				+ "values ('" + data.getUsername() + "', aes_encrypt('" + data.getPassword() + "', 'key'))");
+  		  result = "CreateAccountSuccessful";
+  	  	} catch(SQLException sql)
+	      {
+	          log.append("Error executing DML.");
+	          System.out.println("Error executing DML.");
+	          result = new Error("Error executing DML.", "CreateAccount");
+	      }
       }
       
       // Send the result to the client.
