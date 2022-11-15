@@ -1,1 +1,1 @@
-java -cp .;ocsf.jar lab5out.ServerGUI
+java -cp .;ocsf.jar lab5out_solution.ServerGUI

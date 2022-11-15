@@ -15,3 +15,9 @@
 /ServerGUI$EventHandler.class
 /ServerGUI.class
 /User.class
+/Database.class
+/GamePlayPanel.class
+/GamePlayData.class
+/GamePlayController.class
+/player.class
+/Player.class

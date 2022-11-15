@@ -20,7 +20,7 @@ public class Database {
 	  {
 		    //Open database properties using the FileInputStream
 			try {
-				FileInputStream fis = new FileInputStream("lab7out/db.properties");
+				FileInputStream fis = new FileInputStream("lab5out_solution/db.properties");
 				
 				//Open properties object
 				Properties prop = new Properties();
