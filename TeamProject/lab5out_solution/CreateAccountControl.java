@@ -77,7 +77,7 @@ public class CreateAccountControl implements ActionListener
     ClientGUI clientGUI = (ClientGUI)SwingUtilities.getWindowAncestor(createAccountPanel);
     //clientGUI.setUser(new User(createAccountPanel.getUsername(), createAccountPanel.getPassword()));
     CardLayout cardLayout = (CardLayout)container.getLayout();
-    cardLayout.show(container, "4");
+    cardLayout.show(container, "2");
   }
   
   // Method that displays a message in the error label.
