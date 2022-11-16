@@ -1,1 +1,1 @@
-java -cp .;ocsf.jar lab5out_solution.ServerGUI
+java -cp .;ocsf.jar;mysql-connector-java-5.1.40-bin.jar lab5out_solution.ServerGUI
