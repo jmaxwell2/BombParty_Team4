@@ -44,13 +44,13 @@ public class StartGamePanel extends JPanel {
 		
 		// Create the Play Game button button.
 	    JButton playButton = new JButton("Play");
-	    //playButton.addActionListener(sc);
+	    playButton.addActionListener(sc);
 	    JPanel playButtonBuffer = new JPanel();
 	    playButtonBuffer.add(playButton);
 	    
 	    // Create the Rules button.
 	    JButton rulesButton = new JButton("Rules");
-	    //rulesButton.addActionListener(sc);
+	    rulesButton.addActionListener(sc);
 	    JPanel rulesButtonBuffer = new JPanel();
 	    rulesButtonBuffer.add(rulesButton);
 		

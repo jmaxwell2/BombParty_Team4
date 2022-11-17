@@ -5,14 +5,14 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-public class StartGameControl implements ActionListener
+public class GameLobbyControl implements ActionListener
 {
   // Private data fields for the container and chat client.
   private JPanel container;
   private ChatClient client;
   
   // Constructor for the create account controller.
-  public StartGameControl(JPanel container, ChatClient client)
+  public GameLobbyControl(JPanel container, ChatClient client)
   {
     this.container = container;
     this.client = client;
@@ -27,15 +27,8 @@ public class StartGameControl implements ActionListener
     // The Cancel button takes the user back to the initial panel.
     if (command == "Play")
     {
-    	System.out.println("Play button");
-    	CardLayout cardLayout = (CardLayout)container.getLayout();
-    	cardLayout.show(container, "6");
-    }
-
-    // The Submit button creates a new account.
-    else if (command == "Rules")
-    {
-      
+      CardLayout cardLayout = (CardLayout)container.getLayout();
+      cardLayout.show(container, "7");
     }
   }
 }

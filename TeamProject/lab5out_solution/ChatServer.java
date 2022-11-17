@@ -16,13 +16,14 @@ public class ChatServer extends AbstractServer {
 	private JLabel status;
 	private boolean running = false;
 	private Database database;
-	private List<Player> playerList;
+	private ArrayList<Player> playerList;
 
 	// Constructor for initializing the server with default settings.
 	public ChatServer() {
 		super(12345);
 		this.setTimeout(500);
 		database = new Database();
+		playerList = new ArrayList<Player>();
 	}
 
 	void setDatabase(Database database) {
@@ -43,7 +44,7 @@ public class ChatServer extends AbstractServer {
 		this.status = status;
 	}
 
-	public List<Player> getPlayerList() {
+	public ArrayList<Player> getPlayerList() {
 		return playerList;
 	}
 
@@ -95,18 +96,21 @@ public class ChatServer extends AbstractServer {
 				playerList.add(newPlayer);
 
 				// Send the new playerList to all clients.
-				sendToAllClients(playerList);
+				//sendToAllClients(playerList);
 				
 			} else {
 				result = new Error("The username and password are incorrect.", "Login");
 				log.append("Client " + arg1.getId() + " failed to log in\n");
 			}
+			
+			
 
 			// Send the result to the client.
 			try {
 				arg1.sendToClient(result);
+				System.out.println("LOgin sent");
 			} catch (IOException e) {
-				return;
+				System.out.println(e);
 			}
 		}
 

@@ -58,13 +58,17 @@ public class GamePlayPanel extends JPanel {
 		// client.setGamePlayController(controller);
 
 		// Create a panel for the player name labels at the top of the GUI.
-		JPanel playerListPanel = new JPanel(new GridLayout(1, playerList.size(), 5, 5));
+		/*JPanel playerListPanel = new JPanel(new GridLayout(1, playerList.size(), 5, 5));
 		// create a label for every player
 		for (int i = 0; i < playerList.size(); i++) {
 			JLabel playerNameLabel = new JLabel(playerList.get(i).getUsername(), JLabel.CENTER);
 			//JLabel playerNameLabel = new JLabel(playerList.get(i), JLabel.CENTER);
 			playerListPanel.add(playerNameLabel);
-		}
+		}*/
+		
+		JPanel playerListPanel = new JPanel(new GridLayout(1, 1, 5, 5));
+		JLabel playerNameLabel = new JLabel("TheJordanMaxwell		Trottingwizard		User1243", JLabel.CENTER);
+		playerListPanel.add(playerNameLabel);
 
 		// Create an empty panel to use multiple times
 		JPanel emptyPanel = new JPanel(new GridLayout(1, 1, 5, 5));
