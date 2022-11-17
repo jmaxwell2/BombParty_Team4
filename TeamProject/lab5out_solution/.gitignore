@@ -24,3 +24,6 @@
 /StartGameControl.class
 /StartGameData.class
 /StartGamePanel.class
+/GameLobbyPanel.class
+/GameLobbyControl.class
+/GameLobbyData.class
