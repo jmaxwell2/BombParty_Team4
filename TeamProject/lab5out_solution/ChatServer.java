@@ -4,8 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -78,14 +77,87 @@ public class ChatServer extends AbstractServer {
 
 	// When a message is received from a client, handle it.
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1) {
+		
 		// If we received LoginData, verify the account information.
 		if (arg0 instanceof LoginData) {
 			// Check the username and password with the database.
 			LoginData data = (LoginData) arg0;
 			Object result;
-			ArrayList<String> queResult = database.query("select username from user_data where username = '"
-					+ data.getUsername() + "' and password = aes_encrypt('" + data.getPassword() + "', 'key')");
+			if (database.verifyAccount(data.getUsername(), data.getPassword())) {
+				result = "LoginSuccessful";
+				log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
+				
+				// fetch player info and add it to the playerList
+				Player newPlayer = database.getPlayerDatabaseData(data.getUsername());
+				playerList.add(newPlayer);
+				
+			} else {
+				result = new Error("The username and password are incorrect.", "Login");
+				log.append("Client " + arg1.getId() + " failed to log in\n");
+			}
+
+			// Send the result to the client.
+			try {
+				arg1.sendToClient(result);
+			} catch (IOException e) {
+				return;
+			}
+		}
+
+		// If we received CreateAccountData, create a new account.
+		else if (arg0 instanceof CreateAccountData) {
+			// Try to create the account.
+			CreateAccountData data = (CreateAccountData) arg0;
+			Object result;
+			if (database.createNewAccount(data.getUsername(), data.getPassword())) {
+				result = "CreateAccountSuccessful";
+				log.append("Client " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
+			} else {
+				result = new Error("The username is already in use.", "CreateAccount");
+				log.append("Client " + arg1.getId() + " failed to create a new account\n");
+			}
+
+			// Send the result to the client.
+			try {
+				arg1.sendToClient(result);
+			} catch (IOException e) {
+				return;
+			}
+		}
+		
+		// the game needs to start!
+		else if (arg0 == "StartGame")
+		{
+			GameTurnData turnData = new GameTurnData();
+			
+			// set the list of players that are still in the game
+			turnData.setPlayerList(playerList);
+			
+			// randomly assign the first player's turn
+			
+			// grab the random three letters from the database
+			
+			// start the countdown
+			
+			// send the new turn's data to all the clients
+			this.sendToAllClients(turnData);
+		}
+	}
+	
+	/*
+	// When a message is received from a client, handle it.
+	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1) {
+		// If we received LoginData, verify the account information.
+		if (arg0 instanceof LoginData) {
+			
+			// Check the username and password with the database.
+			LoginData data = (LoginData) arg0;
+			Object result;
+			ArrayList<String> queResult = database.query("select username from user where username = '"
+					+ data.getUsername() + "' and password = '" + data.getPassword() + "';");
 			System.out.println(queResult.toString());
+			System.out.println("did it make it here");
+
 			if (queResult != null) {
 				result = "LoginSuccessful";
 				log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
@@ -96,19 +168,17 @@ public class ChatServer extends AbstractServer {
 				playerList.add(newPlayer);
 
 				// Send the new playerList to all clients.
-				//sendToAllClients(playerList);
-				
+				sendToAllClients(playerList);
+
 			} else {
 				result = new Error("The username and password are incorrect.", "Login");
 				log.append("Client " + arg1.getId() + " failed to log in\n");
 			}
-			
-			
 
 			// Send the result to the client.
 			try {
 				arg1.sendToClient(result);
-				System.out.println("LOgin sent");
+				System.out.println("Login sent");
 			} catch (IOException e) {
 				System.out.println(e);
 			}
@@ -120,14 +190,14 @@ public class ChatServer extends AbstractServer {
 			CreateAccountData data = (CreateAccountData) arg0;
 			Object result;
 			ArrayList<String> queResult = database
-					.query("select username from user_data where username = '" + data.getUsername() + "'");
+					.query("select username from user where username = '" + data.getUsername() + "';d");
 			if (queResult != null) {
 				result = new Error("The username is already in use.", "CreateAccount");
 				log.append("Client " + arg1.getId() + " failed to create a new account\n");
 			} else {
 				try {
-					database.executeDML("insert into user_data " + "values ('" + data.getUsername() + "', aes_encrypt('"
-							+ data.getPassword() + "', 'key'))");
+					database.executeDML("insert into user " + "values ('" + data.getUsername() + "', '"
+							+ data.getPassword() + "');");
 					result = "CreateAccountSuccessful";
 				} catch (SQLException sql) {
 					log.append("Error executing DML.");
@@ -144,6 +214,7 @@ public class ChatServer extends AbstractServer {
 			}
 		}
 	}
+	*/
 
 	// Method that handles listening exceptions by displaying exception information.
 	public void listeningException(Throwable exception) {

@@ -1,106 +1,170 @@
 package lab5out_solution;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
+import java.sql.*;
+import java.io.*;
 
 public class Database {
-	
 	private Connection conn;
-	  //Add any other data fields you like – at least a Connection object is mandatory
-	  public Database()
-	  {
-		    //Open database properties using the FileInputStream
+	// Add any other data fields you like – at least a Connection object is
+	// mandatory
+
+	public Database() {
+		// Where you will start the connection to the database
+
+		try {
+			// 1. need to create the file input string
+			// open the database properties using the FileInputString
+			FileInputStream fis;
+			fis = new FileInputStream("lab5out_solution/db.properties");
+
+			// create a properties object
+			Properties props = new Properties();
+
+			// Load the properties
+			props.load(fis);
+
+			// get the URL from props
+			String url = props.getProperty("url");
+
+			// get the username from props
+			String user = props.getProperty("user");
+
+			// get the password from props
+			String password = props.getProperty("password");
+
+			// use the driver manager to create a connection
 			try {
-				FileInputStream fis = new FileInputStream("lab5out_solution/db.properties");
-				
-				//Open properties object
-				Properties prop = new Properties();
-				
-				//Load the properties
-				try {
-					prop.load(fis);
-					
-					String url = prop.getProperty("url");
-					String user = prop.getProperty("user");
-					String pass = prop.getProperty("password");
-					try {
-						conn = DriverManager.getConnection(url, user, pass);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			} catch (FileNotFoundException e) {
+				conn = DriverManager.getConnection(url, user, password);
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public ArrayList<String> query(String query) {
+		ArrayList<String> list = new ArrayList<String>();
+
+		try {
+			// Create a statement from the connection object
+			Statement stmt = conn.createStatement();
+
+			// Create a result set
+			ResultSet rs = stmt.executeQuery(query);
+
+			// get the number of columns
+			ResultSetMetaData rmd = rs.getMetaData();
+			int noCols = rmd.getColumnCount();
+
+			String row = new String();
+			while (rs.next()) {
+				row = "";
+				
+				// read each column within a row
+				for (int i = 0; i < noCols; i++) {
+					row += rs.getString(i + 1) + ",";
+				}
+
+				// add the row string to the ArrayList
+				list.add(row);
+			}
+
+			if (row.length() == 0)
+				return null;
+			else
+				return list;
+		} catch (SQLException sqlError) {
+			return null;
+		}
+	}
+
+	public void executeDML(String dml) throws SQLException {
+		// Add your code here
+
+		// create your statement
+		Statement stmt = conn.createStatement();
+
+		// execute
+		stmt.execute(dml);
+	}
+	
+	// function that returns all the player data, given a username
+	public Player getPlayerDatabaseData(String username)
+	{
+		String q = "SELECT USERNAME, WINS, LOSSES FROM USER WHERE USERNAME = '" + username + "';";
 		
-	  }
-	  
-	  public ArrayList<String> query(String query)
-	  {
-		  ArrayList<String> list = new ArrayList<String>();
-		  
-		  try {
-			  //Create a statement form the Conn object
-			  Statement statement = conn.createStatement();
-			  
-			  //Create a Result set
-			  ResultSet rs = statement.executeQuery(query);
-			  
-			  String row = new String();
-			  
-			  ResultSetMetaData rmd = rs.getMetaData();
-			  int no_columns = rmd.getColumnCount();
-			  //System.out.println(no_columns);
-			  
-			  
-			  while(rs.next())
-			  {
-				  for (int i = 0; i < no_columns; i++)
-				  {
-					  row += rs.getString(i+1);
-				  }
-				  list.add(row);
-			  }
-			  
-			  if(row.length() == 0)
-			  {
-				  System.out.println("return null");
-				  return null;
-			  } else {
-				  System.out.println("return list");
-				  return list;
-			  }
-		  
-		  } catch (SQLException sql) {
-			  return null;
-		  }
-	  }
-	  
-	  public void executeDML(String dml) throws SQLException
-	  {
-		  Statement statement = conn.createStatement();
-		  
-		  statement.execute(dml);
-		  
-		  //ResultSet rs = statement.executeQuery(dml);
-	  }
+		ArrayList<String> result = query(q);
+		
+		// result is a String seperated by commas,,, so parse is into an array
+		String[] data = result.get(0).split(",");
+		
+		// fill in the Player object to return
+		Player returnPlayer = new Player();
+		returnPlayer.setUsername(data[0]);
+		returnPlayer.setWinLoss_Ratio(Integer.parseInt(data[1]) / Integer.parseInt(data[2]));
+		returnPlayer.setNumOfHearts(3);
+		
+		return returnPlayer;
+	}
+	
+	// function that verifies a username and password are in the database
+	public Boolean verifyAccount(String username, String password) {
+		String q = "SELECT USERNAME FROM USER WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
+		
+		// if the username and password is correct, then the array list will contain the username
+		// if the username and password are incorrect, then the resultList will be null
+		ArrayList<String> result = query(q);
+		
+		if (result == null)
+			return false;
+		else 
+			return true;
+		
+	}
+	
+	// function that checks to see if the username does not already exist in the database
+	// if the username does NOT exist, then add the username and password to the database
+	public Boolean createNewAccount(String username, String password) {
+		
+		// check to see if the username exists in the database
+		if (usernameExists(username))
+			return false;
+		else
+		{
+			// this means the username does not exist
+			// therefore add the username and password to the database'
+			String stm = "INSERT INTO USER VALUES('" + username + "','" + password + "');";
+			
+			try {
+				executeDML(stm);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
+	}
+	
+	// helper function that determines if a usernname already exists in the database
+	public Boolean usernameExists(String username) {
+		String q = "SELECT USERNAME FROM USER WHERE USERNAME = '" + username + "';";
+		
+		// checks if the database contains the username
+		ArrayList<String> result = query(q);
+		
+		// if null, then the username does not exist
+		if (result == null)
+			return false;
+		else 
+			return true;
+
+	}
 
 }

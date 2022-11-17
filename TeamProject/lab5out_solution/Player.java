@@ -6,6 +6,7 @@ public class Player {
 	private String username;
 	private Boolean turn;
 	private Integer numOfHearts;
+	private Integer winLoss_Ratio;
 
 	// Getters
 	public String getUsername() {
@@ -18,6 +19,10 @@ public class Player {
 
 	public Integer getNumOfHearts() {
 		return numOfHearts;
+	}
+	
+	public Integer getWinLoss_Ratio() {
+		return winLoss_Ratio;
 	}
 
 	// Setters
@@ -32,9 +37,13 @@ public class Player {
 	public void setNumOfHearts(Integer num) {
 		this.numOfHearts = num;
 	}
-
-	// Constructor that initializes
-	public Player(String username) {
-		setUsername(username);
+	
+	public void setWinLoss_Ratio(Integer wlr) {
+		this.winLoss_Ratio = wlr;
 	}
+
+//	// Constructor that initializes
+//	public Player(String username) {
+//		setUsername(username);
+//	}
 }
