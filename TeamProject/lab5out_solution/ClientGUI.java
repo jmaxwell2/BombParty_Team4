@@ -40,6 +40,7 @@ public class ClientGUI extends JFrame
     LoginControl lc = new LoginControl(container,client);
     CreateAccountControl cac = new CreateAccountControl(container,client);
     StartGameControl sc = new StartGameControl(container, client);
+    GamePlayController gpc = new GamePlayController(container, client);
     
     //Set the client info
     client.setLoginControl(lc);
@@ -51,7 +52,7 @@ public class ClientGUI extends JFrame
     JPanel view2 = new LoginPanel(lc);
     JPanel view3 = new CreateAccountPanel(cac);
     JPanel view4 = new ContactsPanel();
-    JPanel view5 = new GamePlayPanel();
+    JPanel view5 = new GamePlayPanel(gpc);
     JPanel view6 = new StartGamePanel(sc);
     
     // Add the views to the card layout container.
@@ -64,7 +65,7 @@ public class ClientGUI extends JFrame
    
     
     // Show the initial view in the card layout.
-    cardLayout.show(container, "1");
+    cardLayout.show(container, "5");
     
     // Add the card layout container to the JFrame.
     // GridBagLayout makes the container stay centered in the window.

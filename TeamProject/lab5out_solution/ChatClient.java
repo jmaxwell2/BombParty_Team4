@@ -1,12 +1,17 @@
 package lab5out_solution;
 
+import java.util.List;
+
 import ocsf.client.AbstractClient;
 
 public class ChatClient extends AbstractClient
 {
   // Private data fields for storing the GUI controllers.
   private LoginControl loginControl;
+  private GamePlayController gamePlayController;
   private CreateAccountControl createAccountControl;
+  private Player playerData;
+  private List<Player> playerList;
 
   // Setters for the GUI controllers.
   public void setLoginControl(LoginControl loginControl)
@@ -16,6 +21,16 @@ public class ChatClient extends AbstractClient
   public void setCreateAccountControl(CreateAccountControl createAccountControl)
   {
     this.createAccountControl = createAccountControl;
+  }
+  public void gamePlayController(GamePlayController gamePlayController)
+  {
+    this.gamePlayController = gamePlayController;
+  }
+  public Player getPlayerData() {
+	  return playerData;
+  }
+  public List<Player> getPlayerList() {
+	  return playerList;
   }
 
   // Constructor for initializing the client with default settings.
@@ -64,5 +79,14 @@ public class ChatClient extends AbstractClient
         createAccountControl.displayError(error.getMessage());
       }
     }
+    
+    // if we get a list from the server, it is the playerList
+    else if (arg0 instanceof List<?>) 
+    {
+    	this.playerList = (List<Player>)arg0;
+    	gamePlayController.displayPlayers(playerList);
+    	
+    }
+    	
   }  
 }

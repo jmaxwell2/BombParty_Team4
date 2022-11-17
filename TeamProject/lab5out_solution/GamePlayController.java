@@ -1,6 +1,7 @@
 package lab5out_solution;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -29,12 +30,16 @@ public class GamePlayController {
 
 	// Handle button clicks.
 	public void actionPerformed(ActionEvent ae) {
+		// click the submit button
+			// verify whether their input word contains the three letters locally
+			// if it does, then check to see if the word exists in the database
+				// verified -> next player's turn
+				// not verified -> 
+					// if timer is > 0, then nothing 
+					// if timer is 0, then player loses a heart and then next player's turn
+
 		
-	}
-	
-	// gets the array list of player objects from the server
-	public void getPlayers() {
-		
+		// timer runs out?
 	}
 	
 	// gets the three letters from the server
@@ -55,7 +60,13 @@ public class GamePlayController {
 	}
 	
 	// it is a difference player's turn
-	public void turnSwitch() {
+	public void switchTurns() {
 		
+	}
+	
+	// this sets the player list for the current players in the game
+	public void displayPlayers(List<Player> playerList){
+		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(1);
+		gpPanel.setPlayerList(playerList);
 	}
 }
