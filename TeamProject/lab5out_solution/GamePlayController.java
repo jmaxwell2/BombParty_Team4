@@ -1,7 +1,7 @@
 package lab5out_solution;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.JPanel;
 
@@ -59,14 +59,19 @@ public class GamePlayController {
 		
 	}
 	
-	// it is a difference player's turn
-	public void switchTurns() {
+	// get the new turn data from the client
+	public void setNewTurnData(GameTurnData gtd) {
+		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(1);
 		
+		gpPanel.setTurnLabel(gtd.getTurnString());
+		gpPanel.setPlayerListPanel(gtd.getPlayerList());
+		gpPanel.setThreeLetters(gtd.getThreeLetters());
+		gpPanel.setTimerLabel(gtd.getTimer());
 	}
 	
 	// this sets the player list for the current players in the game
-	public void displayPlayers(List<Player> playerList){
+	public void displayPlayers(ArrayList<Player> playerList){
 		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(1);
-		gpPanel.setPlayerList(playerList);
+		gpPanel.setPlayerListPanel(playerList);
 	}
 }

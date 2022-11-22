@@ -7,12 +7,19 @@ public class GameTurnData {
 
 	private ArrayList<Player> playerList;
 	private Player theirTurn;
+	private String turnString;
 	private String threeLetters;
 	private Timer timer;
 	
 	
 	public ArrayList<Player> getPlayerList() {
 		return playerList;
+	}
+	public String getTurnString() {
+		return turnString;
+	}
+	public void setTurnString(String turnString) {
+		this.turnString = turnString;
 	}
 	public void setPlayerList(ArrayList<Player> playerList) {
 		this.playerList = playerList;
@@ -34,5 +41,17 @@ public class GameTurnData {
 	}
 	public void setTimer(Timer timer) {
 		this.timer = timer;
+	}
+	
+	@Override
+	public String toString() {
+		
+		String stringData = "";
+		
+		stringData = "Players: " + playerList.toString() + "\n";
+		stringData += "It's " + theirTurn.getUsername() + "'s turn!!!\n";
+		stringData += "Three random letters: " + threeLetters + "\n";
+		
+		return stringData;
 	}
 }

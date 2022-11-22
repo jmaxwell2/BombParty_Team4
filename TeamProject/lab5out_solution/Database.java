@@ -45,7 +45,7 @@ public class Database {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 	}
 
 	public ArrayList<String> query(String query) {
@@ -92,6 +92,32 @@ public class Database {
 
 		// execute
 		stmt.execute(dml);
+	}
+	
+	// function that fetches a random word from the database in order to extract random three letters
+	public String getThreeLettersFromDatabase() {
+		String q = "SELECT WORD FROM WORDS ORDER BY RAND() LIMIT 1;";
+		
+		// run the query and get the word in the first index of result
+		ArrayList<String> result = query(q);
+		String word = result.get(0);
+		word = word.substring(0, word.length() - 1);  
+		
+		// randomly grab an index within the range(size of string)
+		Integer wordSize = word.length();
+		Integer randIndex = (int) (Math.random() * wordSize);
+		
+		// ensure that randIndex+2 is not greater than the length-1 of the word
+		while(randIndex+2 >= wordSize)
+			--randIndex;
+		
+		Integer randIndex2 = randIndex + 1;
+		Integer randIndex3 = randIndex + 2;
+		
+		// grab the 3 letters starting from the randIndex letters
+		String threeLetters = Character.toString(word.charAt(randIndex)) + Character.toString(word.charAt(randIndex2)) + Character.toString(word.charAt(randIndex3));
+		
+		return threeLetters;
 	}
 	
 	// function that returns all the player data, given a username

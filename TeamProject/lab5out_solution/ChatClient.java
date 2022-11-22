@@ -1,6 +1,6 @@
 package lab5out_solution;
 
-import java.util.List;
+import java.util.*;
 
 import ocsf.client.AbstractClient;
 
@@ -11,7 +11,6 @@ public class ChatClient extends AbstractClient
   private GamePlayController gamePlayController;
   private CreateAccountControl createAccountControl;
   private Player playerData;
-  private List<Player> playerList;
 
   // Setters for the GUI controllers.
   public void setLoginControl(LoginControl loginControl)
@@ -28,9 +27,6 @@ public class ChatClient extends AbstractClient
   }
   public Player getPlayerData() {
 	  return playerData;
-  }
-  public List<Player> getPlayerList() {
-	  return playerList;
   }
 
   // Constructor for initializing the client with default settings.
@@ -80,12 +76,18 @@ public class ChatClient extends AbstractClient
       }
     }
     
-    // if we get a list from the server, it is the playerList
-    else if (arg0 instanceof List<?>) 
+    // if we get a Player object from the server, the server is telling us which player
+    // is associated with THIS client object
+    else if (arg0 instanceof Player)
     {
-    	this.playerList = (List<Player>)arg0;
-    	gamePlayController.displayPlayers(playerList);
-    	
+    	playerData = (Player) arg0;
+    }
+    
+    // if we get a GameTurnData object from the server... means a new turn!
+    else if (arg0 instanceof GameTurnData) 
+    {
+    	// call a function in GamePlayController that updates panel based off of new turn data
+    	gamePlayController.setNewTurnData((GameTurnData) arg0);
     }
     	
   }  

@@ -24,7 +24,7 @@ public class GameLobbyControl implements ActionListener {
 		// The Cancel button takes the user back to the initial panel.
 		if (command == "Play") {
 			// send to the server a message that the game needs to start
-			Object msg = "StartGame";
+			Object msg = "StartTurn";
 
 			try {
 				client.sendToServer(msg);

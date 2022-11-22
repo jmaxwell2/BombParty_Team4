@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,7 +23,7 @@ public class GamePlayPanel extends JPanel {
 	private JLabel threeLettersLabel;
 	private JLabel timerLabel;
 	private JLabel errorLabel;
-	private List<Player> playerList;
+	private JPanel playerListPanel;
 
 	// Getter for the text in the playerInput field.
 	public String getPlayerInput() {
@@ -42,12 +43,19 @@ public class GamePlayPanel extends JPanel {
 		this.threeLettersLabel.setText(threeLetters);
 	}
 	
-	public void setTimerLabel(String timerLabel) {
-		this.timerLabel.setText(timerLabel);
+	public void setTimerLabel(Timer timer) {
+		this.timerLabel.setText("Timer: " + timer.toString());
 	}
 	
-	public void setPlayerList(List<Player> playerList) {
-		this.playerList = playerList;
+	public void setPlayerListPanel(ArrayList<Player> playerList) {		
+		// build the playerList panel
+		//playerListPanel = new JPanel(new GridLayout(1, playerList.size(), 5, 5));
+		
+		// create a label for every player
+		for (int i = 0; i < playerList.size(); i++) {
+			JLabel playerLabel = new JLabel(playerList.get(i).getUsername() + ": " + playerList.get(i).getNumOfHearts(), JLabel.CENTER);
+			playerListPanel.add(playerLabel);
+		}
 	}
 
 	// Constructor for the GamePlayPanel.
@@ -66,8 +74,8 @@ public class GamePlayPanel extends JPanel {
 			playerListPanel.add(playerNameLabel);
 		}*/
 		
-		JPanel playerListPanel = new JPanel(new GridLayout(1, 1, 5, 5));
-		JLabel playerNameLabel = new JLabel("TheJordanMaxwell		Trottingwizard		User1243", JLabel.CENTER);
+		playerListPanel = new JPanel(new GridLayout(1, 1, 5, 5));
+		JLabel playerNameLabel = new JLabel("", JLabel.CENTER);
 		playerListPanel.add(playerNameLabel);
 
 		// Create an empty panel to use multiple times
@@ -85,7 +93,6 @@ public class GamePlayPanel extends JPanel {
 		// Create a panel for the TIMER label
 		JPanel timerPanel = new JPanel(new GridLayout(1, 1, 5, 5));
 		timerLabel = new JLabel("", JLabel.CENTER);
-		setTimerLabel("10 seconds");
 		timerPanel.add(timerLabel);
 
 		// Create a panel for the information label
@@ -97,7 +104,7 @@ public class GamePlayPanel extends JPanel {
 		JPanel threeLettersPanel = new JPanel(new GridLayout(1, 1, 5, 5));
 		threeLettersLabel = new JLabel("", JLabel.CENTER);
 		threeLettersLabel.setFont(new Font("Serif", Font.BOLD, 20));
-		setThreeLetters("IDL");
+		setThreeLetters("");
 		threeLettersPanel.add(threeLettersLabel);
 
 		// panel that holds the error message

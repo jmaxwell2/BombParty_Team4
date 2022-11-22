@@ -1,6 +1,6 @@
 package lab5out_solution;
 
-import java.util.List;
+import java.util.*;
 import java.util.Timer;
 
 import javax.swing.JTextField;
@@ -10,7 +10,7 @@ public class GamePlayData {
 	private String threeLetters;
 	private Timer timer;
 	private Boolean playerTurn;
-	private List<Player> playerList;
+	private ArrayList<Player> playerList;
 	private String playerInput;
 	
 	
@@ -35,7 +35,7 @@ public class GamePlayData {
 	public List<Player> getPlayerList() {
 		return playerList;
 	}
-	public void setPlayerList(List<Player> playerList) {
+	public void setPlayerList(ArrayList<Player> playerList) {
 		this.playerList = playerList;
 	}
 	public String getPlayerInput() {

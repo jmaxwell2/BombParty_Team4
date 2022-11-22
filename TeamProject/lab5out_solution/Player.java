@@ -1,6 +1,8 @@
 package lab5out_solution;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
 
 	// Private data fields
 	private String username;
@@ -46,4 +48,9 @@ public class Player {
 //	public Player(String username) {
 //		setUsername(username);
 //	}
+	
+	@Override
+	public String toString() {
+		return username;
+	}
 }

@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.Timer;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -16,6 +17,8 @@ public class ChatServer extends AbstractServer {
 	private boolean running = false;
 	private Database database;
 	private ArrayList<Player> playerList;
+	private int turnIndex = 0;
+	private int count = 0;
 
 	// Constructor for initializing the server with default settings.
 	public ChatServer() {
@@ -89,7 +92,21 @@ public class ChatServer extends AbstractServer {
 				
 				// fetch player info and add it to the playerList
 				Player newPlayer = database.getPlayerDatabaseData(data.getUsername());
+				
+				// add the new player to the playerList
 				playerList.add(newPlayer);
+								
+				// update the turnIdex variable because whenever the game starts,
+				// it needs to be the size of the playerList
+				turnIndex = playerList.size() - 1;
+				
+				// send the player data to the client
+				try {
+					arg1.sendToClient(newPlayer);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 			} else {
 				result = new Error("The username and password are incorrect.", "Login");
@@ -126,21 +143,44 @@ public class ChatServer extends AbstractServer {
 		}
 		
 		// the game needs to start!
-		else if (arg0 == "StartGame")
+		else if (arg0 instanceof String)
 		{
-			GameTurnData turnData = new GameTurnData();
+			String msg = (String) arg0;
 			
-			// set the list of players that are still in the game
-			turnData.setPlayerList(playerList);
-			
-			// randomly assign the first player's turn
-			
-			// grab the random three letters from the database
-			
-			// start the countdown
-			
-			// send the new turn's data to all the clients
-			this.sendToAllClients(turnData);
+			if (msg.equals("StartTurn"))
+			{
+				System.out.println("StartTurn invoked");
+				GameTurnData turnData = new GameTurnData();
+				
+				// update the previous turn's player false
+				playerList.get(turnIndex).setTurn(false);
+				
+				// update the next player's turn
+				count++;
+				turnIndex = (count % playerList.size());
+				playerList.get(turnIndex).setTurn(true);
+				
+				// set the turn text label
+				turnData.setTurnString("It's " + playerList.get(turnIndex) + "'s turn!");
+				//System.out.println("It's " + playerList.get(turnIndex).toString() + "'s turn!");
+				
+				// set the list of players that are still in the game
+				turnData.setPlayerList(playerList);
+				
+				// grab the random three letters from the database
+				String threeLetters = database.getThreeLettersFromDatabase();
+				//System.out.println(threeLetters);
+				
+				// update the countdown object
+				Timer t = new Timer();
+				t.schedule(null, 15000);
+				turnData.setTimer(t);
+				
+				System.out.println(turnData.toString());
+				
+				// send the new turn's data to all the clients
+				this.sendToAllClients(turnData);
+			}
 		}
 	}
 	
