@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,10 +21,22 @@ public class GameLobbyPanel extends JPanel {
 	private JLabel titleLabel;
 	private JLabel timerLabel;
 	private JLabel errorLabel;
+	private JPanel playerListPanel;
+	//private JLabel playerNameLabel;
 	private ArrayList<Player> playerList;
 	
 	public void setPlayerList(ArrayList<Player> playerList) {
 		this.playerList = playerList;
+		System.out.println(playerList.toString());
+		
+		int i = 0;
+		for (Player p : playerList) {
+			JLabel test = (JLabel) playerListPanel.getComponent(i);
+			test.setText(p.getUsername());
+			i++;
+		}
+		
+		playerListPanel.repaint();
 	}
 
 	// Constructor for the GameLobbyPanel.
@@ -32,20 +45,19 @@ public class GameLobbyPanel extends JPanel {
 		titleLabel = new JLabel("Start Game", JLabel.CENTER);
 		
 		// Create a panel for the player name labels at the top of the GUI.
-		JPanel playerListPanel = new JPanel(new GridLayout(1, 1, 5, 5));
+		playerListPanel = new JPanel(new GridLayout(1, 3, 5, 5));
 		
 		// create a label for every player
-		/*
-		for (int i = 0; i < playerList.size(); i++) {
-			JLabel playerNameLabel = new JLabel(playerList.get(i).getUsername(), JLabel.CENTER);
-			//JLabel playerNameLabel = new JLabel(playerList.get(i), JLabel.CENTER);
-			playerListPanel.add(playerNameLabel);
-		}
-		*/
+		JLabel playerNameOne = new JLabel("test 1", JLabel.CENTER);
+		JLabel playerNameTwo = new JLabel("test 2", JLabel.CENTER);
+		JLabel playerNameThree = new JLabel("test 3", JLabel.CENTER);
+		playerListPanel.add(playerNameOne);
+		playerListPanel.add(playerNameTwo);
+		playerListPanel.add(playerNameThree);
 		
-		JLabel playerNameLabel = new JLabel("TheJordanMaxwell		Trottingwizard		User1243", JLabel.CENTER);
-		playerListPanel.add(playerNameLabel);
-
+		
+		//playerNameLabel = new JLabel("TheJordanMaxwell		Trottingwizard		User1243", JLabel.CENTER);
+		//playerListPanel.add(playerNameLabel);
 
 		// Create the Play Game button button.
 	    JButton playButton = new JButton("Play");
@@ -60,5 +72,7 @@ public class GameLobbyPanel extends JPanel {
 		grid.add(playButton);
 		this.add(grid);
 	}
+	
+	
 
 }

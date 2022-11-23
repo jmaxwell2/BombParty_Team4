@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameLobbyControl implements ActionListener {
 	// Private data fields for the container and chat client.
@@ -36,5 +37,11 @@ public class GameLobbyControl implements ActionListener {
 			CardLayout cardLayout = (CardLayout) container.getLayout();
 			cardLayout.show(container, "7");
 		}
+	}
+	
+	public void updatePlayerList(ArrayList<Player> playerList) 
+	{
+		 GameLobbyPanel gameLobbyPanel = (GameLobbyPanel)container.getComponent(5);
+		 gameLobbyPanel.setPlayerList(playerList);
 	}
 }

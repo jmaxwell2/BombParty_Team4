@@ -62,6 +62,9 @@ public class LoginControl implements ActionListener
   {
     LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
     
+    StartGamePanel startGamePanel = (StartGamePanel)container.getComponent(4);
+	startGamePanel.setWLValue(client.getPlayerData().getWinLossRatio());
+    
     CardLayout cardLayout = (CardLayout)container.getLayout();
     cardLayout.show(container, "5");
   }

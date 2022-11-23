@@ -28,7 +28,20 @@ public class StartGameControl implements ActionListener
     if (command == "Play")
     {
     	System.out.println("Play button");
+    	
+    	StartGameData data = new StartGameData("");
+        try
+        {
+          client.sendToServer(data);
+        }
+        catch (IOException e)
+        {
+          System.out.println("Didn't send to server.");
+        }
+        
     	CardLayout cardLayout = (CardLayout)container.getLayout();
+    	//GameLobbyPanel gameLobbyPanel = (GameLobbyPanel)container.getComponent(5);
+    	//gameLobbyPanel.repaint();
     	cardLayout.show(container, "6");
     }
 
@@ -38,4 +51,16 @@ public class StartGameControl implements ActionListener
       
     }
   }
+  /*
+  public String requestWLRatio()
+  {
+	  return client.getPlayerData().getWinLossRatio();
+  }
+  
+  //Get win/loss ratio from database
+  public void changeWinLossRatio(Player p)
+  {
+	  StartGamePanel startGamePanel = (StartGamePanel)container.getComponent(4);
+	  startGamePanel.setWLValue(p.getWinLossRatio());
+  }*/
 }

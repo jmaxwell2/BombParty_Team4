@@ -5,12 +5,19 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
 	// Private data fields
+	private String playerID;
 	private String username;
 	private Boolean turn;
 	private Integer numOfHearts;
-	private Integer winLoss_Ratio;
+	private Integer wins;
+	private Integer losses;
+	private String winLossRatio;
 
 	// Getters
+	public String getPlayerID() {
+		return playerID;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -23,11 +30,23 @@ public class Player implements Serializable {
 		return numOfHearts;
 	}
 	
-	public Integer getWinLoss_Ratio() {
-		return winLoss_Ratio;
+	public Integer getWins() {
+		return wins;
+	}
+	
+	public Integer getLosses() {
+		return losses;
+	}
+	
+	public String getWinLossRatio() {
+		return winLossRatio;
 	}
 
 	// Setters
+	public void setPlayerID(Long id) {
+		this.playerID = id.toString();
+	}
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -40,8 +59,16 @@ public class Player implements Serializable {
 		this.numOfHearts = num;
 	}
 	
-	public void setWinLoss_Ratio(Integer wlr) {
-		this.winLoss_Ratio = wlr;
+	public void setWins(Integer num) {
+		this.wins = num;
+	}
+	
+	public void setLosses(Integer num) {
+		this.losses = num;
+	}
+	
+	public void setWinLossRatio(String wlr) {
+		this.winLossRatio = wlr;
 	}
 
 //	// Constructor that initializes

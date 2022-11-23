@@ -28,3 +28,6 @@
 /GameLobbyControl.class
 /GameLobbyData.class
 /GameTurnData.class
+/GameOverControl.class
+/GameOverData.class
+/GameOverPanel.class

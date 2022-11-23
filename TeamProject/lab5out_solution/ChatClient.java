@@ -10,6 +10,8 @@ public class ChatClient extends AbstractClient
   private LoginControl loginControl;
   private GamePlayController gamePlayController;
   private CreateAccountControl createAccountControl;
+  private StartGameControl startGameControl;
+  private GameLobbyControl gameLobbyControl;
   private Player playerData;
 
   // Setters for the GUI controllers.
@@ -24,6 +26,14 @@ public class ChatClient extends AbstractClient
   public void gamePlayController(GamePlayController gamePlayController)
   {
     this.gamePlayController = gamePlayController;
+  }
+  public void setStartGameControl(StartGameControl sc) 
+  {
+	  this.startGameControl = sc;
+  }
+  public void setGameLobbyControl(GameLobbyControl glc)
+  {
+	  this.gameLobbyControl = glc;
   }
   public Player getPlayerData() {
 	  return playerData;
@@ -47,7 +57,8 @@ public class ChatClient extends AbstractClient
       // If we successfully logged in, tell the login controller.
       if (message.equals("LoginSuccessful"))
       {
-        loginControl.loginSuccess();
+    	  //startGameControl.changeWinLossRatio(playerData);
+    	  loginControl.loginSuccess();
       }
       
       // If we successfully created an account, tell the create account controller.
@@ -56,6 +67,12 @@ public class ChatClient extends AbstractClient
         createAccountControl.createAccountSuccess();
       }
     }
+    /*
+    else if (arg0 instanceof StartGameData) 
+    {
+    	StartGameData data = (StartGameData) arg0;
+    	startGameControl.changeWinLossRatio(data.getWLRatio());
+    }*/
     
     // If we received an Error, figure out where to display it.
     else if (arg0 instanceof Error)
@@ -88,6 +105,12 @@ public class ChatClient extends AbstractClient
     {
     	// call a function in GamePlayController that updates panel based off of new turn data
     	gamePlayController.setNewTurnData((GameTurnData) arg0);
+    }
+    
+    else if (arg0 instanceof ArrayList<?>) 
+    {
+    	ArrayList<Player> playerList = (ArrayList<Player>) arg0;
+    	gameLobbyControl.updatePlayerList(playerList);
     }
     	
   }  

@@ -92,7 +92,18 @@ public class ChatServer extends AbstractServer {
 				
 				// fetch player info and add it to the playerList
 				Player newPlayer = database.getPlayerDatabaseData(data.getUsername());
+				/*newPlayer.setPlayerID(arg1.getId());
 				
+				Long playerID = arg1.getId();
+				StartGameData startData = (StartGameData) arg0;
+				startData.setWLRatio(newPlayer.getWinLossRatio());
+								
+				// Send the win/loss ratio to the client.
+				try {
+					arg1.sendToClient(data);
+				} catch (IOException e) {
+					return;
+				}*/
 				// add the new player to the playerList
 				playerList.add(newPlayer);
 								
@@ -140,6 +151,10 @@ public class ChatServer extends AbstractServer {
 			} catch (IOException e) {
 				return;
 			}
+		}
+		
+		else if (arg0 instanceof StartGameData) {
+			this.sendToAllClients(playerList);
 		}
 		
 		// the game needs to start!

@@ -42,10 +42,13 @@ public class ClientGUI extends JFrame
     StartGameControl sc = new StartGameControl(container, client);
     GamePlayController gpc = new GamePlayController(container, client);
     GameLobbyControl glc = new GameLobbyControl(container, client);
+    GameOverControl goc = new GameOverControl(container, client);
     
     //Set the client info
     client.setLoginControl(lc);
     client.setCreateAccountControl(cac);
+    client.setStartGameControl(sc);
+    client.setGameLobbyControl(glc);
    
     
     // Create the four views. (need the controller to register with the Panels
@@ -56,6 +59,7 @@ public class ClientGUI extends JFrame
     JPanel view5 = new StartGamePanel(sc);
     JPanel view6 = new GameLobbyPanel(glc);
     JPanel view7 = new GamePlayPanel(gpc);
+    JPanel view8 = new GameOverPanel(goc);
     
     // Add the views to the card layout container.
     container.add(view1, "1");
@@ -65,6 +69,7 @@ public class ClientGUI extends JFrame
     container.add(view5, "5");
     container.add(view6, "6");
     container.add(view7, "7");
+    container.add(view8, "8");
     
    
     

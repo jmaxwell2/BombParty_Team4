@@ -39,6 +39,7 @@ public class StartGamePanel extends JPanel {
 		
 		//Add code to get players win/loss ratio from database
 		winLossValue = new JLabel("0 : 0", JLabel.CENTER);
+		//winLossValue.setText(sc.requestWLRatio());
 		winLossPanel.add(winRatioLabel);
 		winLossPanel.add(winLossValue);
 		

@@ -133,7 +133,9 @@ public class Database {
 		// fill in the Player object to return
 		Player returnPlayer = new Player();
 		returnPlayer.setUsername(data[0]);
-		returnPlayer.setWinLoss_Ratio(Integer.parseInt(data[1]) / Integer.parseInt(data[2]));
+		returnPlayer.setWins(Integer.parseInt(data[1]));
+		returnPlayer.setLosses(Integer.parseInt(data[2]));
+		returnPlayer.setWinLossRatio(data[1] + " : " + data[2]);
 		returnPlayer.setNumOfHearts(3);
 		
 		return returnPlayer;
