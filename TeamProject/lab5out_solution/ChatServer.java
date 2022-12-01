@@ -164,7 +164,7 @@ public class ChatServer extends AbstractServer {
 			
 			if (msg.equals("StartTurn"))
 			{
-				System.out.println("StartTurn invoked");
+				System.out.println("StartTurn invoked in server");
 				GameTurnData turnData = new GameTurnData();
 				
 				// update the previous turn's player false
@@ -175,6 +175,9 @@ public class ChatServer extends AbstractServer {
 				turnIndex = (count % playerList.size());
 				playerList.get(turnIndex).setTurn(true);
 				
+				// set the turn on the turnData
+				turnData.setTheirTurn(playerList.get(turnIndex));
+				
 				// set the turn text label
 				turnData.setTurnString("It's " + playerList.get(turnIndex) + "'s turn!");
 				//System.out.println("It's " + playerList.get(turnIndex).toString() + "'s turn!");
@@ -184,92 +187,20 @@ public class ChatServer extends AbstractServer {
 				
 				// grab the random three letters from the database
 				String threeLetters = database.getThreeLettersFromDatabase();
+				turnData.setThreeLetters(threeLetters);
 				//System.out.println(threeLetters);
 				
 				// update the countdown object
-				Timer t = new Timer();
-				t.schedule(null, 15000);
-				turnData.setTimer(t);
-				
-				System.out.println(turnData.toString());
-				
+//				Timer t = new Timer();
+//				t.schedule(null, 15000);
+//				turnData.setTimer(t);
+								
 				// send the new turn's data to all the clients
 				this.sendToAllClients(turnData);
+				
 			}
 		}
 	}
-	
-	/*
-	// When a message is received from a client, handle it.
-	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1) {
-		// If we received LoginData, verify the account information.
-		if (arg0 instanceof LoginData) {
-			
-			// Check the username and password with the database.
-			LoginData data = (LoginData) arg0;
-			Object result;
-			ArrayList<String> queResult = database.query("select username from user where username = '"
-					+ data.getUsername() + "' and password = '" + data.getPassword() + "';");
-			System.out.println(queResult.toString());
-			System.out.println("did it make it here");
-
-			if (queResult != null) {
-				result = "LoginSuccessful";
-				log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
-
-				// fetch player info and add it to the playerList
-				// (will need to add more data fields like win/loss ratio
-				Player newPlayer = new Player(data.getUsername());
-				playerList.add(newPlayer);
-
-				// Send the new playerList to all clients.
-				sendToAllClients(playerList);
-
-			} else {
-				result = new Error("The username and password are incorrect.", "Login");
-				log.append("Client " + arg1.getId() + " failed to log in\n");
-			}
-
-			// Send the result to the client.
-			try {
-				arg1.sendToClient(result);
-				System.out.println("Login sent");
-			} catch (IOException e) {
-				System.out.println(e);
-			}
-		}
-
-		// If we received CreateAccountData, create a new account.
-		else if (arg0 instanceof CreateAccountData) {
-			// Try to create the account.
-			CreateAccountData data = (CreateAccountData) arg0;
-			Object result;
-			ArrayList<String> queResult = database
-					.query("select username from user where username = '" + data.getUsername() + "';d");
-			if (queResult != null) {
-				result = new Error("The username is already in use.", "CreateAccount");
-				log.append("Client " + arg1.getId() + " failed to create a new account\n");
-			} else {
-				try {
-					database.executeDML("insert into user " + "values ('" + data.getUsername() + "', '"
-							+ data.getPassword() + "');");
-					result = "CreateAccountSuccessful";
-				} catch (SQLException sql) {
-					log.append("Error executing DML.");
-					System.out.println("Error executing DML.");
-					result = new Error("Error executing DML.", "CreateAccount");
-				}
-			}
-
-			// Send the result to the client.
-			try {
-				arg1.sendToClient(result);
-			} catch (IOException e) {
-				return;
-			}
-		}
-	}
-	*/
 
 	// Method that handles listening exceptions by displaying exception information.
 	public void listeningException(Throwable exception) {

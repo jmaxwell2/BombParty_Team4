@@ -1,9 +1,10 @@
 package lab5out_solution;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
 
-public class GameTurnData {
+public class GameTurnData implements Serializable {
 
 	private ArrayList<Player> playerList;
 	private Player theirTurn;

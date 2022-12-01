@@ -23,7 +23,7 @@ public class ChatClient extends AbstractClient
   {
     this.createAccountControl = createAccountControl;
   }
-  public void gamePlayController(GamePlayController gamePlayController)
+  public void setGamePlayController(GamePlayController gamePlayController)
   {
     this.gamePlayController = gamePlayController;
   }
@@ -48,6 +48,8 @@ public class ChatClient extends AbstractClient
   // Method that handles messages from the server.
   public void handleMessageFromServer(Object arg0)
   {
+	  //System.out.println("msg from server of type: " + arg0.getClass());
+	  
     // If we received a String, figure out what this event is.
     if (arg0 instanceof String)
     {
@@ -103,8 +105,10 @@ public class ChatClient extends AbstractClient
     // if we get a GameTurnData object from the server... means a new turn!
     else if (arg0 instanceof GameTurnData) 
     {
+    	GameTurnData gtd = (GameTurnData) arg0;
+    	
     	// call a function in GamePlayController that updates panel based off of new turn data
-    	gamePlayController.setNewTurnData((GameTurnData) arg0);
+    	gamePlayController.setNewTurnData(gtd);
     }
     
     else if (arg0 instanceof ArrayList<?>) 

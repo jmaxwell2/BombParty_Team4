@@ -48,9 +48,9 @@ public class GameLobbyPanel extends JPanel {
 		playerListPanel = new JPanel(new GridLayout(1, 3, 5, 5));
 		
 		// create a label for every player
-		JLabel playerNameOne = new JLabel("test 1", JLabel.CENTER);
-		JLabel playerNameTwo = new JLabel("test 2", JLabel.CENTER);
-		JLabel playerNameThree = new JLabel("test 3", JLabel.CENTER);
+		JLabel playerNameOne = new JLabel("", JLabel.CENTER);
+		JLabel playerNameTwo = new JLabel("", JLabel.CENTER);
+		JLabel playerNameThree = new JLabel("", JLabel.CENTER);
 		playerListPanel.add(playerNameOne);
 		playerListPanel.add(playerNameTwo);
 		playerListPanel.add(playerNameThree);

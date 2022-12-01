@@ -37,7 +37,7 @@ public class GamePlayController {
 				// not verified -> 
 					// if timer is > 0, then nothing 
 					// if timer is 0, then player loses a heart and then next player's turn
-
+		
 		
 		// timer runs out?
 	}
@@ -61,7 +61,7 @@ public class GamePlayController {
 	
 	// get the new turn data from the client
 	public void setNewTurnData(GameTurnData gtd) {
-		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(1);
+		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(6);
 		
 		gpPanel.setTurnLabel(gtd.getTurnString());
 		gpPanel.setPlayerListPanel(gtd.getPlayerList());
@@ -71,7 +71,7 @@ public class GamePlayController {
 	
 	// this sets the player list for the current players in the game
 	public void displayPlayers(ArrayList<Player> playerList){
-		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(1);
+		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(6);
 		gpPanel.setPlayerListPanel(playerList);
 	}
 }
