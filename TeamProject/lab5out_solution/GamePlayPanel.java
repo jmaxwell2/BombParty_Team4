@@ -121,7 +121,7 @@ public class GamePlayPanel extends JPanel {
 		// Create a panel for the buttons.
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 5, 5));
 		JButton submitBttn = new JButton("Submit");
-		// submitBttn.addActionListener(gpc);
+		submitBttn.addActionListener(gpc);
 		buttonPanel.add(submitBttn);
 
 		// Arrange the panels in a grid.

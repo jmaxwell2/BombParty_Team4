@@ -80,7 +80,8 @@ public class ChatServer extends AbstractServer {
 
 	// When a message is received from a client, handle it.
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1) {
-		
+		System.out.println("msg from client of type: " + arg0.getClass());
+
 		// If we received LoginData, verify the account information.
 		if (arg0 instanceof LoginData) {
 			// Check the username and password with the database.
@@ -89,28 +90,25 @@ public class ChatServer extends AbstractServer {
 			if (database.verifyAccount(data.getUsername(), data.getPassword())) {
 				result = "LoginSuccessful";
 				log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
-				
+
 				// fetch player info and add it to the playerList
 				Player newPlayer = database.getPlayerDatabaseData(data.getUsername());
-				/*newPlayer.setPlayerID(arg1.getId());
-				
-				Long playerID = arg1.getId();
-				StartGameData startData = (StartGameData) arg0;
-				startData.setWLRatio(newPlayer.getWinLossRatio());
-								
-				// Send the win/loss ratio to the client.
-				try {
-					arg1.sendToClient(data);
-				} catch (IOException e) {
-					return;
-				}*/
+				/*
+				 * newPlayer.setPlayerID(arg1.getId());
+				 * 
+				 * Long playerID = arg1.getId(); StartGameData startData = (StartGameData) arg0;
+				 * startData.setWLRatio(newPlayer.getWinLossRatio());
+				 * 
+				 * // Send the win/loss ratio to the client. try { arg1.sendToClient(data); }
+				 * catch (IOException e) { return; }
+				 */
 				// add the new player to the playerList
 				playerList.add(newPlayer);
-								
+
 				// update the turnIdex variable because whenever the game starts,
 				// it needs to be the size of the playerList
 				turnIndex = playerList.size() - 1;
-				
+
 				// send the player data to the client
 				try {
 					arg1.sendToClient(newPlayer);
@@ -118,7 +116,7 @@ public class ChatServer extends AbstractServer {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			} else {
 				result = new Error("The username and password are incorrect.", "Login");
 				log.append("Client " + arg1.getId() + " failed to log in\n");
@@ -152,54 +150,66 @@ public class ChatServer extends AbstractServer {
 				return;
 			}
 		}
-		
+
+		// if the input word is sent to be verified within a GamePlayData object
+		else if (arg0 instanceof GamePlayData) {
+			System.out.println("GamePlayData made it to the server");
+			GamePlayData gpData = (GamePlayData) arg0;
+			Object result;
+
+			// verify the word
+			result = database.verifyInputWord(gpData.getThreeLetters(), gpData.getPlayerInput());
+
+			System.out.println("RESULT: " + result.toString());
+
+			sendToAllClients(result);
+		}
+
 		else if (arg0 instanceof StartGameData) {
 			this.sendToAllClients(playerList);
 		}
-		
+
 		// the game needs to start!
-		else if (arg0 instanceof String)
-		{
+		else if (arg0 instanceof String) {
 			String msg = (String) arg0;
-			
-			if (msg.equals("StartTurn"))
-			{
+
+			if (msg.equals("StartTurn")) {
 				System.out.println("StartTurn invoked in server");
 				GameTurnData turnData = new GameTurnData();
-				
+
 				// update the previous turn's player false
 				playerList.get(turnIndex).setTurn(false);
-				
+
 				// update the next player's turn
 				count++;
 				turnIndex = (count % playerList.size());
 				playerList.get(turnIndex).setTurn(true);
-				
+
 				// set the turn on the turnData
 				turnData.setTheirTurn(playerList.get(turnIndex));
-				
+
 				// set the turn text label
 				turnData.setTurnString("It's " + playerList.get(turnIndex) + "'s turn!");
-				//System.out.println("It's " + playerList.get(turnIndex).toString() + "'s turn!");
-				
+				// System.out.println("It's " + playerList.get(turnIndex).toString() + "'s
+				// turn!");
+
 				// set the list of players that are still in the game
 				turnData.setPlayerList(playerList);
-				
+
 				// grab the random three letters from the database
 				String threeLetters = database.getThreeLettersFromDatabase();
 				turnData.setThreeLetters(threeLetters);
-				//System.out.println(threeLetters);
-				
+				// System.out.println(threeLetters);
+
 				// update the countdown object
 //				Timer t = new Timer();
 //				t.schedule(null, 15000);
 //				turnData.setTimer(t);
-								
+
 				// send the new turn's data to all the clients
 				this.sendToAllClients(turnData);
-				
-			} else if (msg.equals("Check Players")) 
-			{
+
+			} else if (msg.equals("Check Players")) {
 				if (playerList.size() == 3) {
 					this.sendToAllClients("Start Game");
 				} else {

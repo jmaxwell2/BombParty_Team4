@@ -1,11 +1,13 @@
 package lab5out_solution;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.*;
 
 import javax.swing.JPanel;
 
-public class GamePlayController {
+public class GamePlayController implements ActionListener {
 
 	// this class needs from the server:
 		// an array of the players (within the player class is a bool that determines
@@ -21,6 +23,7 @@ public class GamePlayController {
 	// Private data fields for the container and chat client.
 	private JPanel container;
 	private ChatClient client;
+	private GamePlayData gamePlayData = new GamePlayData();
 
 	// Constructor for the GamePlay controller.
 	public GamePlayController(JPanel container, ChatClient client) {
@@ -40,6 +43,51 @@ public class GamePlayController {
 		
 		
 		// timer runs out?
+		
+		
+		
+		
+		// Get the name of the button clicked.
+	    String command = ae.getActionCommand();
+	    
+	 // The Submit button submits the input word to the server.
+	    if (command.equals("Submit"))
+	    {
+	    	System.out.println("Submit buttone pressed!");
+	    	
+	      // Get the username and password the user entered.
+	      GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(6);
+	      System.out.println("got the panel");
+	      
+	      // save the word
+	      GamePlayData gpData = new GamePlayData();
+	      System.out.println("created the gpdata object");
+	      gpData.setPlayerInput(gpPanel.getPlayerInput());
+	      System.out.println("set the player input");
+	      gpData.setThreeLetters(gamePlayData.getThreeLetters()); // gamePlayData holds the current 3 letters
+	      System.out.println("set the three letters");
+	      
+	      // Check the validity of the information locally first.
+	      if (gpData.getPlayerInput().equals(""))
+	      {
+	        displayError("You must enter a word.");
+	        return;
+	      }
+	      System.out.println("validity of the word checked... here is some info: ");
+
+	      System.out.println(gpData.getPlayerInput());
+	      System.out.println(gpData.getThreeLetters());
+	      // Submit the input word to the server.
+	      try
+	      {
+	        client.sendToServer(gpData);
+	        System.out.println("submitted to the server");
+	      }
+	      catch (IOException e)
+	      {
+	        displayError("Error connecting to the server.");
+	      }
+	    }
 	}
 	
 	// gets the three letters from the server
@@ -67,6 +115,8 @@ public class GamePlayController {
 		gpPanel.setPlayerListPanel(gtd.getPlayerList());
 		gpPanel.setThreeLetters(gtd.getThreeLetters());
 		gpPanel.setTimerLabel(gtd.getTimer());
+		
+		gamePlayData.setThreeLetters(gtd.getThreeLetters());
 	}
 	
 	// this sets the player list for the current players in the game
@@ -74,4 +124,11 @@ public class GamePlayController {
 		GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(6);
 		gpPanel.setPlayerListPanel(playerList);
 	}
+	
+	// Method that displays a message in the error label.
+		  public void displayError(String error)
+		  {
+		    GamePlayPanel gpPanel = (GamePlayPanel)container.getComponent(6);
+		    gpPanel.setError(error);
+		  }
 }
