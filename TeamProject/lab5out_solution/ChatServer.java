@@ -198,6 +198,18 @@ public class ChatServer extends AbstractServer {
 				// send the new turn's data to all the clients
 				this.sendToAllClients(turnData);
 				
+			} else if (msg.equals("Check Players")) 
+			{
+				if (playerList.size() == 3) {
+					this.sendToAllClients("Start Game");
+				} else {
+					try {
+						arg1.sendToClient("Move to GameLobby");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}

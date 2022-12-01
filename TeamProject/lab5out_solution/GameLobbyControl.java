@@ -25,17 +25,19 @@ public class GameLobbyControl implements ActionListener {
 		// The Cancel button takes the user back to the initial panel.
 		if (command == "Play") {
 			// send to the server a message that the game needs to start
-			Object msg = "StartTurn";
+			/*Object msg = "StartTurn";
 
 			try {
 				client.sendToServer(msg);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 
+			/*
 			CardLayout cardLayout = (CardLayout) container.getLayout();
 			cardLayout.show(container, "7");
+			*/
 		}
 	}
 	
@@ -43,5 +45,11 @@ public class GameLobbyControl implements ActionListener {
 	{
 		 GameLobbyPanel gameLobbyPanel = (GameLobbyPanel)container.getComponent(5);
 		 gameLobbyPanel.setPlayerList(playerList);
+	}
+	
+	public void moveToGamePlay()
+	{
+		CardLayout cardLayout = (CardLayout) container.getLayout();
+		cardLayout.show(container, "7");
 	}
 }

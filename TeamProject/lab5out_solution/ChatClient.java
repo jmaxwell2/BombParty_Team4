@@ -1,5 +1,6 @@
 package lab5out_solution;
 
+import java.io.IOException;
 import java.util.*;
 
 import ocsf.client.AbstractClient;
@@ -67,6 +68,27 @@ public class ChatClient extends AbstractClient
       else if (message.equals("CreateAccountSuccessful"))
       {
         createAccountControl.createAccountSuccess();
+      }
+      
+      //If lobby is full, move into the GamePlay panel
+      else if (message.equals("Start Game"))
+      {
+    	  gameLobbyControl.moveToGamePlay();
+    	  
+    	  Object msg = "StartTurn";
+
+			try {
+				this.sendToServer(msg);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+      }
+      
+      //If lobby not full, move into GameLobby panel
+      else if (message.equals("Move to GameLobby"))
+      {
+    	  startGameControl.moveToLobby();
       }
     }
     /*

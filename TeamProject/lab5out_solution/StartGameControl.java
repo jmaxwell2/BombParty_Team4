@@ -39,10 +39,17 @@ public class StartGameControl implements ActionListener
           System.out.println("Didn't send to server.");
         }
         
+        try {
+        	client.sendToServer("Check Players");
+        } catch (IOException e) {
+        	System.out.println("Didn't send to server.");
+        }
+        /*
     	CardLayout cardLayout = (CardLayout)container.getLayout();
     	//GameLobbyPanel gameLobbyPanel = (GameLobbyPanel)container.getComponent(5);
     	//gameLobbyPanel.repaint();
     	cardLayout.show(container, "6");
+    	*/
     }
 
     // The Submit button creates a new account.
@@ -51,6 +58,16 @@ public class StartGameControl implements ActionListener
       
     }
   }
+  
+  public void moveToLobby()
+  {
+	  	CardLayout cardLayout = (CardLayout)container.getLayout();
+  		//GameLobbyPanel gameLobbyPanel = (GameLobbyPanel)container.getComponent(5);
+  		//gameLobbyPanel.repaint();
+  		cardLayout.show(container, "6");
+  }
+  
+  
   /*
   public String requestWLRatio()
   {
