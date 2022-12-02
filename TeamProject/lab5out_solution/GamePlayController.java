@@ -23,12 +23,13 @@ public class GamePlayController implements ActionListener {
 	// Private data fields for the container and chat client.
 	private JPanel container;
 	private ChatClient client;
-	private GamePlayData gamePlayData = new GamePlayData();
+	private GamePlayData gamePlayData;
 
 	// Constructor for the GamePlay controller.
 	public GamePlayController(JPanel container, ChatClient client) {
 		this.container = container;
 		this.client = client;
+		this.gamePlayData = new GamePlayData();
 	}
 
 	// Handle button clicks.
@@ -50,7 +51,7 @@ public class GamePlayController implements ActionListener {
 		// Get the name of the button clicked.
 	    String command = ae.getActionCommand();
 	    
-	 // The Submit button submits the input word to the server.
+	    // The Submit button submits the input word to the server.
 	    if (command.equals("Submit"))
 	    {
 	    	System.out.println("Submit buttone pressed!");
@@ -64,7 +65,7 @@ public class GamePlayController implements ActionListener {
 	      System.out.println("created the gpdata object");
 	      gpData.setPlayerInput(gpPanel.getPlayerInput());
 	      System.out.println("set the player input");
-	      gpData.setThreeLetters(gamePlayData.getThreeLetters()); // gamePlayData holds the current 3 letters
+	      gpData.setThreeLetters(gpPanel.getThreeLetters()); // gamePlayData holds the current 3 letters
 	      System.out.println("set the three letters");
 	      
 	      // Check the validity of the information locally first.
@@ -77,7 +78,8 @@ public class GamePlayController implements ActionListener {
 
 	      System.out.println(gpData.getPlayerInput());
 	      System.out.println(gpData.getThreeLetters());
-	      // Submit the input word to the server.
+	      
+	      // Submit the gamePlayData to the server.
 	      try
 	      {
 	        client.sendToServer(gpData);
@@ -86,6 +88,8 @@ public class GamePlayController implements ActionListener {
 	      catch (IOException e)
 	      {
 	        displayError("Error connecting to the server.");
+	        //System.out.println(e);
+	        e.printStackTrace();
 	      }
 	    }
 	}
@@ -116,7 +120,7 @@ public class GamePlayController implements ActionListener {
 		gpPanel.setThreeLetters(gtd.getThreeLetters());
 		gpPanel.setTimerLabel(gtd.getTimer());
 		
-		gamePlayData.setThreeLetters(gtd.getThreeLetters());
+		//gamePlayData.setThreeLetters(gtd.getThreeLetters());
 	}
 	
 	// this sets the player list for the current players in the game

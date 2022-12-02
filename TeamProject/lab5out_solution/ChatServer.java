@@ -210,7 +210,7 @@ public class ChatServer extends AbstractServer {
 				this.sendToAllClients(turnData);
 
 			} else if (msg.equals("Check Players")) {
-				if (playerList.size() == 3) {
+				if (playerList.size() == 1) {
 					this.sendToAllClients("Start Game");
 				} else {
 					try {

@@ -29,6 +29,11 @@ public class GamePlayPanel extends JPanel {
 	public String getPlayerInput() {
 		return playerInput.getText();
 	}
+	
+	// Getter for the three letters.
+		public String getThreeLetters() {
+			return threeLettersLabel.getText();
+		}
 
 	// Setter for the error text.
 	public void setError(String error) {
