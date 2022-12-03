@@ -78,6 +78,17 @@ public class GamePlayController implements ActionListener {
 
 	      System.out.println(gpData.getPlayerInput());
 	      System.out.println(gpData.getThreeLetters());
+	      System.out.println(client.isConnected());
+	      
+	      if (client.isConnected() == false) {
+	    	  try {
+	  			client.openConnection();
+	  		} catch (IOException e1) {
+	  			// TODO Auto-generated catch block
+	  			e1.printStackTrace();
+	  		}
+	      }
+	      
 	      
 	      // Submit the gamePlayData to the server.
 	      try
