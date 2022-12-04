@@ -58,6 +58,9 @@ public class Player implements Serializable {
 	public void setNumOfHearts(Integer num) {
 		this.numOfHearts = num;
 	}
+	public void decrementHearts() {
+		this.numOfHearts = this.numOfHearts - 1;
+	}
 	
 	public void setWins(Integer num) {
 		this.wins = num;
@@ -78,6 +81,6 @@ public class Player implements Serializable {
 	
 	@Override
 	public String toString() {
-		return username;
+		return username + ": " + numOfHearts;
 	}
 }

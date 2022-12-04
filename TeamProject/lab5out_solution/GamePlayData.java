@@ -9,11 +9,16 @@ import javax.swing.JTextField;
 public class GamePlayData implements Serializable {
 
 	private String threeLetters;
-//	private Timer timer;
-//	private Boolean playerTurn;
-//	private ArrayList<Player> playerList;
 	private String playerInput;
+	private Integer chances;
 	
+	
+	public Integer getChances() {
+		return chances;
+	}
+	public void setChances(Integer chances) {
+		this.chances = chances;
+	}
 	
 	public String getThreeLetters() {
 		return threeLetters;
@@ -21,24 +26,7 @@ public class GamePlayData implements Serializable {
 	public void setThreeLetters(String threeLetters) {
 		this.threeLetters = threeLetters;
 	}
-//	public Timer getTimer() {
-//		return timer;
-//	}
-//	public void setTimer(Timer timer) {
-//		this.timer = timer;
-//	}
-//	public Boolean getPlayerTurn() {
-//		return playerTurn;
-//	}
-//	public void setPlayerTurn(Boolean playerTurn) {
-//		this.playerTurn = playerTurn;
-//	}
-//	public List<Player> getPlayerList() {
-//		return playerList;
-//	}
-//	public void setPlayerList(ArrayList<Player> playerList) {
-//		this.playerList = playerList;
-//	}
+
 	public String getPlayerInput() {
 		return playerInput;
 	}

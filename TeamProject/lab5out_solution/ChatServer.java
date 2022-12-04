@@ -11,7 +11,7 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class ChatServer extends AbstractServer {
-	// Data fields for this chat server.
+	// Data fields for this server.
 	private JTextArea log;
 	private JLabel status;
 	private boolean running = false;
@@ -19,6 +19,7 @@ public class ChatServer extends AbstractServer {
 	private ArrayList<Player> playerList;
 	private int turnIndex = 0;
 	private int count = 0;
+	private Integer chances;
 
 	// Constructor for initializing the server with default settings.
 	public ChatServer() {
@@ -26,6 +27,7 @@ public class ChatServer extends AbstractServer {
 		this.setTimeout(500);
 		database = new Database();
 		playerList = new ArrayList<Player>();
+		chances = 3;
 	}
 
 	void setDatabase(Database database) {
@@ -80,7 +82,7 @@ public class ChatServer extends AbstractServer {
 
 	// When a message is received from a client, handle it.
 	public void handleMessageFromClient(Object arg0, ConnectionToClient arg1) {
-		System.out.println("msg from client of type: " + arg0.getClass());
+		//System.out.println("msg from client of type: " + arg0.getClass());
 
 		// If we received LoginData, verify the account information.
 		if (arg0 instanceof LoginData) {
@@ -151,18 +153,42 @@ public class ChatServer extends AbstractServer {
 			}
 		}
 
-		// if the input word is sent to be verified within a GamePlayData object
-		else if (arg0 instanceof GamePlayData) {
-			System.out.println("GamePlayData made it to the server");
-			GamePlayData gpData = (GamePlayData) arg0;
+		// the input word is sent to be verified within a GamePlayData object
+		else if (arg0 instanceof GameTurnData) {
+			GameTurnData gtData = (GameTurnData) arg0;
 			Object result;
 
 			// verify the word
-			result = database.verifyInputWord(gpData.getThreeLetters(), gpData.getPlayerInput());
-
-			System.out.println("RESULT: " + result.toString());
-
-			sendToAllClients(result);
+			result = database.verifyInputWord(gtData.getThreeLetters(), gtData.getPlayerInput());
+			
+			// if the result is FALSE, then send message back to client to display a wrong word error label
+			if ((Boolean)result == false) {
+				TryAgainData taData = new TryAgainData();
+				
+				if (this.chances > 1) {
+					taData.setChances(--this.chances); // decrement the chances on the current turn
+				
+					try {
+						arg1.sendToClient(taData);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else {
+					// current player loses a heart
+					for (int i = 0; i < playerList.size(); i++) {
+						if (playerList.get(i).getTurn() == true)
+							playerList.get(i).decrementHearts();
+					}
+					
+					startTurn(); // player lost chances! another player's turn!
+				}
+			}
+			// if the result is TRUE, then start new turn!
+			if ((Boolean)result == true)
+				startTurn();
+			
 		}
 
 		else if (arg0 instanceof StartGameData) {
@@ -174,43 +200,10 @@ public class ChatServer extends AbstractServer {
 			String msg = (String) arg0;
 
 			if (msg.equals("StartTurn")) {
-				System.out.println("StartTurn invoked in server");
-				GameTurnData turnData = new GameTurnData();
-
-				// update the previous turn's player false
-				playerList.get(turnIndex).setTurn(false);
-
-				// update the next player's turn
-				count++;
-				turnIndex = (count % playerList.size());
-				playerList.get(turnIndex).setTurn(true);
-
-				// set the turn on the turnData
-				turnData.setTheirTurn(playerList.get(turnIndex));
-
-				// set the turn text label
-				turnData.setTurnString("It's " + playerList.get(turnIndex) + "'s turn!");
-				// System.out.println("It's " + playerList.get(turnIndex).toString() + "'s
-				// turn!");
-
-				// set the list of players that are still in the game
-				turnData.setPlayerList(playerList);
-
-				// grab the random three letters from the database
-				String threeLetters = database.getThreeLettersFromDatabase();
-				turnData.setThreeLetters(threeLetters);
-				// System.out.println(threeLetters);
-
-				// update the countdown object
-//				Timer t = new Timer();
-//				t.schedule(null, 15000);
-//				turnData.setTimer(t);
-
-				// send the new turn's data to all the clients
-				this.sendToAllClients(turnData);
+				startTurn();
 
 			} else if (msg.equals("Check Players")) {
-				if (playerList.size() == 3) {
+				if (playerList.size() > 1) {
 					this.sendToAllClients("Start Game");
 				} else {
 					try {
@@ -231,5 +224,40 @@ public class ChatServer extends AbstractServer {
 		status.setForeground(Color.RED);
 		log.append("Listening exception: " + exception.getMessage() + "\n");
 		log.append("Press Listen to restart server\n");
+	}
+	
+	public void startTurn() {
+		System.out.println("StartTurn invoked in server");
+		//System.out.println(playerList.toString());
+		
+		GameTurnData turnData = new GameTurnData();
+
+		// update the previous turn's player false
+		playerList.get(turnIndex).setTurn(false);
+
+		// update the next player's turn
+		count++;
+		turnIndex = (count % playerList.size());
+		playerList.get(turnIndex).setTurn(true);
+
+		// set the turn on the turnData
+		turnData.setTheirTurn(playerList.get(turnIndex));
+
+		// set the turn text label
+		turnData.setTurnString("It's " + playerList.get(turnIndex) + "'s turn!");
+		
+		// initialize the chances to 3
+		this.chances = 3;
+		turnData.setChances(3);
+
+		// set the list of players that are still in the game
+		turnData.setPlayerList(playerList);
+
+		// grab the random three letters from the database
+		String threeLetters = database.getThreeLettersFromDatabase();
+		turnData.setThreeLetters(threeLetters);
+
+		// send the new turn's data to all the clients
+		this.sendToAllClients(turnData);
 	}
 }

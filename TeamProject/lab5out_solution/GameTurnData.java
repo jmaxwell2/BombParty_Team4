@@ -4,15 +4,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
 
-public class GameTurnData implements Serializable {
+public class GameTurnData implements Serializable { 
 
 	private ArrayList<Player> playerList;
 	private Player theirTurn;
 	private String turnString;
 	private String threeLetters;
-	private Timer timer;
+	private String playerInput;
+//	private Timer timer;
+	private Integer chances;
+	private Boolean enabledInput;
 	
 	
+	public Boolean getEnabledInput() {
+		return enabledInput;
+	}
+	public void setEnabledInput(Boolean enabledInput) {
+		this.enabledInput = enabledInput;
+	}
 	public ArrayList<Player> getPlayerList() {
 		return playerList;
 	}
@@ -37,11 +46,24 @@ public class GameTurnData implements Serializable {
 	public void setThreeLetters(String threeLetters) {
 		this.threeLetters = threeLetters;
 	}
-	public Timer getTimer() {
-		return timer;
+//	public Timer getTimer() {
+//		return timer;
+//	}
+//	public void setTimer(Timer timer) {
+//		this.timer = timer;
+//	}
+	public Integer getChances() {
+		return chances;
 	}
-	public void setTimer(Timer timer) {
-		this.timer = timer;
+	public void setChances(Integer chances) {
+		this.chances = chances;
+	}
+	
+	public String getPlayerInput() {
+		return playerInput;
+	}
+	public void setPlayerInput(String playerInput) {
+		this.playerInput = playerInput;
 	}
 	
 	@Override

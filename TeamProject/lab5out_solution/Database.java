@@ -129,15 +129,17 @@ public class Database {
 		// first gets all the words in the database that contains the three letters
 		// these will be the pool of words that is used to verify if the input word is a "real" word
 		String q = "SELECT * FROM WORDS WHERE WORD RLIKE('" + letters + "');";
-		System.out.println(q);
 		ArrayList<String> result = query(q);
 		
-		int len = result.get(0).length();
-		String newWord = result.get(0).substring(0, len - 1);
+		int len = 0;
 		
+		for (int i = 0; i < result.size(); i++) {
+			len = result.get(i).length();
+			result.set(i, result.get(i).substring(0, len - 1));
+		}
 		
 		// next, verify if the input word is in the query result
-		if (newWord.equals(input))
+		if (result.contains(input))
 			return true;
 		else
 			return false;
