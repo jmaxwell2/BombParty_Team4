@@ -193,7 +193,7 @@ public class Database {
 		else {
 			// this means the username does not exist
 			// therefore add the username and password to the database'
-			String stm = "INSERT INTO USER VALUES('" + username + "','" + password + "');";
+			String stm = "INSERT INTO USER VALUES('" + username + "','" + password + "', 0, 0);";
 
 			try {
 				executeDML(stm);

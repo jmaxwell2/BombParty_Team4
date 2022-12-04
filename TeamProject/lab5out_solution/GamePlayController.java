@@ -32,15 +32,6 @@ public class GamePlayController implements ActionListener {
 
 	// Handle button clicks.
 	public void actionPerformed(ActionEvent ae) {
-		// click the submit button
-		// verify whether their input word contains the three letters locally
-		// if it does, then check to see if the word exists in the database
-		// verified -> next player's turn
-		// not verified ->
-		// if timer is > 0, then nothing
-		// if timer is 0, then player loses a heart and then next player's turn
-
-		// timer runs out?
 
 		// Get the name of the button clicked.
 		String command = ae.getActionCommand();

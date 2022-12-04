@@ -178,8 +178,17 @@ public class ChatServer extends AbstractServer {
 				else {
 					// current player loses a heart
 					for (int i = 0; i < playerList.size(); i++) {
+						// get the current player whose turn it is
 						if (playerList.get(i).getTurn() == true)
-							playerList.get(i).decrementHearts();
+							
+							// check if they lost the game (lost all their hearts)
+							if (playerList.get(i).getNumOfHearts() == 1)
+							{
+								GameOverData goData = new GameOverData();
+								goData.setPlayerIs("Loser");
+							}
+							else	
+								playerList.get(i).decrementHearts();
 					}
 					
 					startTurn(); // player lost chances! another player's turn!
