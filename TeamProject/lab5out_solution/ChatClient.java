@@ -12,6 +12,7 @@ public class ChatClient extends AbstractClient {
 	private CreateAccountControl createAccountControl;
 	private StartGameControl startGameControl;
 	private GameLobbyControl gameLobbyControl;
+	private GameOverControl gameOverControl;
 	private Player playerData;
 
 	// Setters for the GUI controllers.
@@ -33,6 +34,10 @@ public class ChatClient extends AbstractClient {
 
 	public void setGameLobbyControl(GameLobbyControl glc) {
 		this.gameLobbyControl = glc;
+	}
+	
+	public void setGameOverControl(GameOverControl goc) {
+		this.gameOverControl = goc;
 	}
 
 	public Player getPlayerData() {
@@ -138,6 +143,19 @@ public class ChatClient extends AbstractClient {
 			// turn data
 			gamePlayController.displayError("");
 			gamePlayController.setNewTurnData(gtd);
+		}
+		
+		else if (arg0 instanceof GameOverData)
+		{
+			GameOverData goData = (GameOverData) arg0;
+			
+			if (goData.getLoser().getUsername().equals(playerData.getUsername()))
+				goData.setResult("lost");
+			else 
+				goData.setResult("WIN");
+			
+			gameOverControl.setGameOverData(goData);
+			gamePlayController.moveToGameOver();
 		}
 
 		else if (arg0 instanceof ArrayList<?>) {

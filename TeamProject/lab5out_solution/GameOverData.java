@@ -4,21 +4,23 @@ import java.io.Serializable;
 
 public class GameOverData implements Serializable
 {
-	private String winLossRatio;
-	private String playerIs;
-	
-	public String getPlayerIs() {
-		return playerIs;
+	private Player loser;
+	private String result;
+
+	public String getResult() {
+		return result;
 	}
-	public void setPlayerIs(String playerIs) {
-		this.playerIs = playerIs;
+
+	public void setResult(String result) {
+		this.result = result;
 	}
-	public void setWLRatio(String winLossRatio)
-	{
-		this.winLossRatio = winLossRatio;
+
+	public Player getLoser() {
+		return loser;
 	}
-	public String getWLRatio()
-	{
-		return winLossRatio;
+
+	public void setLoser(Player loser) {
+		this.loser = loser;
 	}
+
 }

@@ -1,5 +1,6 @@
 package lab5out_solution;
 
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -118,5 +119,10 @@ public class GamePlayController implements ActionListener {
 	{
 		GamePlayPanel gpPanel = (GamePlayPanel) container.getComponent(6);
 		gpPanel.setChancesText(chances);
+	}
+	
+	public void moveToGameOver() {
+		CardLayout cardLayout = (CardLayout) container.getLayout();
+		cardLayout.show(container, "8");
 	}
 }

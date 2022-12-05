@@ -23,9 +23,9 @@ public class GameOverPanel extends JPanel {
 	private JLabel winLossValue;
 	
 	// Setter for the win/loss text.
-	public void setWLValue(String value)
+	public void setResultLabel(String result)
 	{
-		winLossValue.setText(value);
+		resultLabel.setText("You " + result + "!!!");
 	}
 
 	// Constructor for the StartGamePanel.
@@ -33,8 +33,12 @@ public class GameOverPanel extends JPanel {
 	{
 		
 		titleLabel = new JLabel("Game Over", JLabel.CENTER);
+		titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		titleLabel.setForeground(Color.RED);
 		
-		resultLabel = new JLabel("Winner", JLabel.CENTER);
+		resultLabel = new JLabel("", JLabel.CENTER);
+		resultLabel.setFont(new Font("Serif", Font.BOLD, 30));
+		resultLabel.setForeground(Color.BLUE);
 		
 		JLabel playAgain = new JLabel("Would you like to play the game again?", JLabel.CENTER);
 		

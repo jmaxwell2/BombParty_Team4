@@ -13,7 +13,7 @@ public class ClientGUI extends JFrame
   {
     // Set up the chat client.
    ChatClient client = new ChatClient();
-    client.setHost("localhost");
+    client.setHost("10.252.97.49");
     client.setPort(8300);
     try
     {
@@ -50,6 +50,7 @@ public class ClientGUI extends JFrame
     client.setStartGameControl(sc);
     client.setGameLobbyControl(glc);
     client.setGamePlayController(gpc);
+    client.setGameOverControl(goc);
    
     
     // Create the four views. (need the controller to register with the Panels

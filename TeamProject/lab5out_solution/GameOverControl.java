@@ -27,17 +27,50 @@ public class GameOverControl implements ActionListener
     // The Cancel button takes the user back to the initial panel.
     if (command == "Yes")
     {
-    	System.out.println("Yes button");
-    	CardLayout cardLayout = (CardLayout)container.getLayout();
-    	cardLayout.show(container, "6");
+//    	System.out.println("Yes button");
+//    	CardLayout cardLayout = (CardLayout)container.getLayout();
+//    	cardLayout.show(container, "6");
+    	
+    	Object msg = "PlayAgain";
+    	try {
+			client.sendToServer(msg);
+			
+			CardLayout cardLayout = (CardLayout)container.getLayout();
+	    	cardLayout.show(container, "5");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     // The Submit button creates a new account.
     else if (command == "No")
     {
-      System.out.println("No button");
-      CardLayout cardLayout = (CardLayout)container.getLayout();
-      cardLayout.show(container, "5");
+//      System.out.println("No button");
+//      CardLayout cardLayout = (CardLayout)container.getLayout();
+//      cardLayout.show(container, "5");
+    	
+    	try {
+    		Player quitter = client.getPlayerData();
+    		// log out the player that does not want to play again
+			client.sendToServer(quitter);
+			
+			// send them to the initial panel
+			CardLayout cardLayout = (CardLayout)container.getLayout();
+	    	cardLayout.show(container, "1");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
   }
+  
+  	//get the game over data from the client
+    // and set the panel data
+	public void setGameOverData(GameOverData god) {
+		GameOverPanel goPanel = (GameOverPanel) container.getComponent(7);
+
+		goPanel.setResultLabel(god.getResult());
+	}
+
 }

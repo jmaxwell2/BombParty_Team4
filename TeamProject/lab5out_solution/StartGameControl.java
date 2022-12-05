@@ -67,17 +67,4 @@ public class StartGameControl implements ActionListener
   		cardLayout.show(container, "6");
   }
   
-  
-  /*
-  public String requestWLRatio()
-  {
-	  return client.getPlayerData().getWinLossRatio();
-  }
-  
-  //Get win/loss ratio from database
-  public void changeWinLossRatio(Player p)
-  {
-	  StartGamePanel startGamePanel = (StartGamePanel)container.getComponent(4);
-	  startGamePanel.setWLValue(p.getWinLossRatio());
-  }*/
 }

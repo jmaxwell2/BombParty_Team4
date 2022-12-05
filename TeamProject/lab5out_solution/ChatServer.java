@@ -185,7 +185,12 @@ public class ChatServer extends AbstractServer {
 							if (playerList.get(i).getNumOfHearts() == 1)
 							{
 								GameOverData goData = new GameOverData();
-								goData.setPlayerIs("Loser");
+								
+								// set the lose of the game
+								goData.setLoser(playerList.get(i));
+								
+								// send the game over data to the clients
+								sendToAllClients(goData);
 							}
 							else	
 								playerList.get(i).decrementHearts();
@@ -200,7 +205,24 @@ public class ChatServer extends AbstractServer {
 			
 		}
 
+		// start the game!
 		else if (arg0 instanceof StartGameData) {
+			this.sendToAllClients(playerList);
+		}
+		
+		// if player data is sent to server, then this is simply representing the player that
+		// has decided to NOT play again
+		else if (arg0 instanceof Player) {
+			Player quittingPlayer = (Player) arg0;
+			
+			// remove this player from the playerList
+			for (int i = 0; i < playerList.size(); i++)
+			{
+				if (playerList.get(i).getUsername().equals(quittingPlayer.getUsername()))
+					playerList.remove(i);
+			}
+			
+			// updates the game lobby player list
 			this.sendToAllClients(playerList);
 		}
 
@@ -223,6 +245,15 @@ public class ChatServer extends AbstractServer {
 					}
 				}
 			}
+			
+			else if (msg.equals("PlayAgain")) {
+				//update the hearts of each player
+				for (int i = 0; i < playerList.size(); i++) {
+					playerList.get(i).setNumOfHearts(3);
+				}
+				
+				startTurn();
+			}
 		}
 	}
 
@@ -235,10 +266,7 @@ public class ChatServer extends AbstractServer {
 		log.append("Press Listen to restart server\n");
 	}
 	
-	public void startTurn() {
-		System.out.println("StartTurn invoked in server");
-		//System.out.println(playerList.toString());
-		
+	public void startTurn() {				
 		GameTurnData turnData = new GameTurnData();
 
 		// update the previous turn's player false
@@ -253,7 +281,7 @@ public class ChatServer extends AbstractServer {
 		turnData.setTheirTurn(playerList.get(turnIndex));
 
 		// set the turn text label
-		turnData.setTurnString("It's " + playerList.get(turnIndex) + "'s turn!");
+		turnData.setTurnString("It's " + playerList.get(turnIndex).getUsername() + "'s turn!");
 		
 		// initialize the chances to 3
 		this.chances = 3;
