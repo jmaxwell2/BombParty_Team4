@@ -55,7 +55,14 @@ public class StartGameControl implements ActionListener
     // The Submit button creates a new account.
     else if (command == "Rules")
     {
-      
+     
+
+    	JOptionPane.showMessageDialog(container, "On players turn, they are given 3 letters and they must correctly guess the right word\n"
+    			+ "That contains those letters\n \n"
+    			+ "You gets three chance to correctly guess the word then the game moves to next player.\n"
+    			+ "If you don't guess the correct word, you lose 1 of your 3 total hearts.\n \n"
+    			+ "If the player loses all 3 of their hearts, they lose the game.\n"
+    			+ "The game continues until there is only 1 player left\n\nEnjoy!");
     }
   }
   
