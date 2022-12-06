@@ -220,5 +220,27 @@ public class Database {
 			return true;
 
 	}
+	
+	public void incrementWins(String username) {
+		String stm = "update user set wins = wins + 1 where username = '" + username + "';";
+
+		try {
+			executeDML(stm);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+	
+	public void incrementLosses(String username) {
+		String stm = "update user set losses = losses + 1 where username = '" + username + "';";
+
+		try {
+			executeDML(stm);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
 
 }
