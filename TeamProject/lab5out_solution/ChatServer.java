@@ -189,6 +189,16 @@ public class ChatServer extends AbstractServer {
 								// set the lose of the game
 								goData.setLoser(playerList.get(i));
 								
+								//Increment wins and losses of players
+								if (playerList.get(0).equals(playerList.get(i))) {
+									database.incrementLosses(playerList.get(0).getUsername());
+									database.incrementWins(playerList.get(1).getUsername());
+								} else {
+									database.incrementWins(playerList.get(0).getUsername());
+									database.incrementLosses(playerList.get(1).getUsername());
+								}
+								
+								
 								// send the game over data to the clients
 								sendToAllClients(goData);
 							}
