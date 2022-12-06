@@ -13,7 +13,8 @@ public class ClientGUI extends JFrame
   {
     // Set up the chat client.
    ChatClient client = new ChatClient();
-    client.setHost("10.252.97.49");
+    //client.setHost("10.252.97.49");
+    client.setHost("192.168.0.28");
     client.setPort(8300);
     try
     {

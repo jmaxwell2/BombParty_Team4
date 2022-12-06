@@ -10,17 +10,6 @@ import javax.swing.JPanel;
 
 public class GamePlayController implements ActionListener {
 
-	// this class needs from the server:
-	// an array of the players (within the player class is a bool that determines
-	// whose turn it is)
-	// Timer() object
-
-	// methods:
-	// playerSwitch that the server calls in order for the Panel to know what
-	// player's turn it is
-	// verify word
-	// get three letters
-
 	// Private data fields for the container and chat client.
 	private JPanel container;
 	private ChatClient client;
@@ -71,23 +60,6 @@ public class GamePlayController implements ActionListener {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	// gets the three letters from the server
-	public void getThreeLetters() {
-
-	}
-
-	// function called that sends input words to the server to verify
-	public void verifyInputWord() {
-		// helped function that can be called from the action performed method
-		// this function gets the word from the textArea and sends it to the server
-
-	}
-
-	// word verified from the server method
-	public void wordVerified() {
-
 	}
 
 	// get the new turn data from the client
